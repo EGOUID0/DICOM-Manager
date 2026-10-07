@@ -229,7 +229,7 @@ def main():
         if 'selection' in args.read:
             read_selection(dicom_directory)
 
-    # :--/ anonymize /--:
+    # / anonymize /
     if args.anonymize:
 
         output_directory = dicom_directory + '_MODIFIED'
