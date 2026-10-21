@@ -78,7 +78,10 @@ if ($LASTEXITCODE -ne 0) {
     throw 'CLI help smoke test failed'
 }
 
-$release = Join-Path $root 'release/DICOM-Manager-2.0.0a7-Windows'
+$version = & $python -c "from importlib.metadata import version; print(version('dicom-manager'))"
+Assert-LastExitCode 'Could not determine application version.'
+
+$release = Join-Path $root 'release/DICOM-Manager-$version-Windows'
 if (Test-Path $release) {
     Remove-Item -Recurse -Force $release
 }
@@ -89,7 +92,7 @@ Copy-Item -Recurse -Force 'dist/DICOM-Manager-GUI' (Join-Path $release 'GUI')
 Copy-Item -Recurse -Force 'dist/dicom-manager' (Join-Path $release 'CLI')
 Copy-Item -Force 'packaging/windows/README-Windows.md' (Join-Path $release 'README-Windows.md')
 
-$zip = Join-Path $root 'release/DICOM-Manager-2.0.0a7-Windows.zip'
+$zip = Join-Path $root 'release/DICOM-Manager-$version-Windows.zip'
 if (Test-Path $zip) {
     Remove-Item $zip
 }

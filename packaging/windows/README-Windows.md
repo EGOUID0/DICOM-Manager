@@ -5,7 +5,7 @@
 # Created: 2026-10-09
 -->
 
-# DICOM-Manager 2.0.0a7 — Windows
+# DICOM-Manager 2.0.1 — Windows
 
 ## Build requirements
 
@@ -19,7 +19,7 @@ From the extracted project directory:
 powershell -ExecutionPolicy Bypass -File .\packaging\windows\build.ps1
 ```
 
-The script creates `release/DICOM-Manager-2.0.0a7-Windows.zip` containing:
+The script creates `release/DICOM-Manager-2.0.1-Windows.zip` containing:
 
 - `GUI/DICOM-Manager-GUI.exe` (desktop app; keep `_internal` alongside it)
 - `CLI/dicom-manager.exe` (command-line app; keep `_internal` alongside it)
@@ -29,9 +29,9 @@ These are **portable one-folder distributions**, not a signed Windows installer.
 ## Validation on Windows
 
 ```powershell
-.\release\DICOM-Manager-2.0.0a7-Windows\CLI\dicom-manager.exe --version
-.\release\DICOM-Manager-2.0.0a7-Windows\CLI\dicom-manager.exe --help
-.\release\DICOM-Manager-2.0.0a7-Windows\GUI\DICOM-Manager-GUI.exe
+.\release\DICOM-Manager-2.0.1-Windows\CLI\dicom-manager.exe --version
+.\release\DICOM-Manager-2.0.1-Windows\CLI\dicom-manager.exe --help
+.\release\DICOM-Manager-2.0.1-Windows\GUI\DICOM-Manager-GUI.exe
 ```
 
 Then test `inspect`, `organize`, `anonymize --set`, DICOMDIR, light/dark themes and settings persistence with **non-identifying test DICOM files**. Confirm the packaged application works on a clean Windows machine without Python installed. Do not distribute actual patient data or test output containing PHI.

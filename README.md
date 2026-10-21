@@ -45,9 +45,9 @@ The Windows portable distribution bundles Python and its dependencies; users do 
 ## Windows: download and run the portable application
 
 1. Open the [DICOM-Manager Releases page](https://github.com/EGOUID0/DICOM-Manager/releases).
-2. Under the desired release's **Assets**, download the Windows portable ZIP (for example, `DICOM-Manager-2.0.0-Windows.zip`). The example name is illustrative; use the filename actually published.
+2. Under the desired release's **Assets**, download the Windows portable ZIP (for example, `DICOM-Manager-2.0.1-Windows.zip`). The example name is illustrative; use the filename actually published.
 3. In File Explorer, open **Downloads**, right-click the ZIP, choose **Extract All…**, choose a destination, and click **Extract**. **Do not run the executable from inside the ZIP.**
-4. Open the extracted `DICOM-Manager-2.0.0-Windows` directory (the folder name may vary by release).
+4. Open the extracted `DICOM-Manager-2.0.1-Windows` directory (the folder name may vary by release).
 5. For the GUI, double-click `GUI\DICOM-Manager-GUI.exe`.
 6. For the CLI, open PowerShell in the extracted directory and run:
 
@@ -59,7 +59,7 @@ The Windows portable distribution bundles Python and its dependencies; users do 
 The extracted distribution should resemble:
 
 ```text
-DICOM-Manager-2.0.0-Windows/
+DICOM-Manager-2.0.1-Windows/
 ├── GUI/
 │   ├── DICOM-Manager-GUI.exe
 │   └── _internal/

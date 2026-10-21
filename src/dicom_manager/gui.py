@@ -3,15 +3,17 @@
 # Project: https://github.com/EGOUID0/DICOM-Manager
 # Created: 2026-10-09
 
-import sys
 import platform
+from pathlib import Path
+import shutil
+import sys
+
 import pydicom
 from importlib.metadata import version as package_version, PackageNotFoundError
 from PySide6 import __version__ as pyside_version
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl, qVersion
 from . import __version__ as APP_VERSION
-from pathlib import Path
 from PySide6.QtCore import QProcess, Qt, QSettings
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
     QHBoxLayout, QFormLayout, QTabWidget, QLineEdit, QPushButton, QFileDialog,
@@ -20,13 +22,30 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
 from .defaults import INSPECT_DEFAULTS, ANONYMIZE_DEFAULTS
 from .core.config import load_values, write_template
 from .core.discovery import locate_dicom_files
-import pydicom
 from pydicom.datadict import keyword_dict
 
 
 COMMON = tuple(dict.fromkeys((*INSPECT_DEFAULTS, "SeriesNumber", "InstanceNumber", "SeriesDescription", "SOPClassUID", "Rows", "Columns", "PixelSpacing", "ImageType")))
 ALL_FIELDS = sorted(k for k in keyword_dict if k)
 
+def resolve_cli() -> tuple[str, list[str]]:
+    """Locate the CLI for source and portable installations."""
+
+    if getattr(sys, "frozen", False):
+        gui_exe = Path(sys.executable).resolve()
+        cli_exe = gui_exe.parent.parent / "CLI" / "dicom-manager.exe"
+
+        if not cli_exe.is_file():
+            raise FileNotFoundError(f"CLI executable not found: {cli_exe}")
+
+        return str(cli_exe), []
+
+    cli = shutil.which("dicom-manager")
+
+    if cli:
+        return cli, []
+
+    return sys.executable, ["-m", "dicom_manager"]
 
 class FieldsDialog(QDialog):
     """Searchable field picker, with a distinct frequently-used section."""
@@ -227,13 +246,16 @@ class Window(QMainWindow):
         return path
 
     def start(self, args, done=None):
+
+        program, prefix = resolve_cli()
+
         if self.proc is not None:
             QMessageBox.warning(self,"Busy","Another operation is running")
             return
         self.log.appendPlainText("$ dicom-manager " + " ".join(args))
         self.proc = QProcess(self)
-        self.proc.setProgram(sys.executable)
-        self.proc.setArguments(["-m", "dicom_manager", *args])
+        self.proc.setProgram(program)
+        self.proc.setArguments([*prefix, *args])
         self.proc.setProcessChannelMode(QProcess.ProcessChannelMode.MergedChannels)
         self.proc.readyReadStandardOutput.connect(lambda: self.log.appendPlainText(bytes(self.proc.readAllStandardOutput()).decode("utf-8", "replace").rstrip("\n")))
         self.proc.finished.connect(lambda code, status: self.finished(code, done))
