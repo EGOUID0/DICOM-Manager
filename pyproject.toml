@@ -1,0 +1,37 @@
+# DICOM-Manager - Python setup
+# Author: Pascal Malouin (https://github.com/EGOUID0)
+# Project: https://github.com/EGOUID0/DICOM-Manager
+# Created: 2026-10-09
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dicom-manager"
+version = "2.0.0a7"
+description = "Cross-platform CLI tools for inspecting, anonymizing, modifying and organizing DICOM datasets."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Pascal Malouin" }]
+dependencies = ["pydicom>=3.0.2,<4", "rich>=14,<15"]
+
+[project.scripts]
+dicom-manager = "dicom_manager.cli:main"
+dicom-manager-gui = "dicom_manager.gui:main"
+
+[project.optional-dependencies]
+gui = ["PySide6>=6.6,<7"]
+dev = ["pytest>=8", "ruff>=0.8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dicom_manager"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
